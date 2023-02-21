@@ -181,8 +181,6 @@ function InfoForm({
 
 	const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) =>
 		setName(event?.target.value)
-	const handleSelectedEventsChange = (selectedOptions: any) =>
-		setSelectedEvents(selectedOptions)
 
 	function verifyChecks() {
 		let errors: any = {}
@@ -248,14 +246,14 @@ function InfoForm({
 					value={selectedEvents}
 					onChange={(v) => {
 						// here i dont want the user to choose more then 3 topics
-						if (v == null || v.length < 6) {
+						if (v == null || v.length < 4) {
 							setSelectedEvents(v.map((a) => a))
 						}
 					}}
 					isMulti
 				/>
 				<FormHelperText>
-					Pick up to 5 competitors to get updates for
+					Pick up to 3 competitors to get updates for
 				</FormHelperText>
 				<FormErrorMessage>{errors.selectedEvents}</FormErrorMessage>
 			</FormControl>

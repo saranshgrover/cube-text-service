@@ -25,11 +25,8 @@ const LandingPage: React.FC = () => {
 					/>
 
 					<Heading as='h1' size='4xl' fontWeight='bold' mb={2}>
-						Votus
+						Nodus
 					</Heading>
-					<Text mb='2em' fontSize={'2xl'}>
-						Victoria Of The United States
-					</Text>
 					<Heading as='p' size='md' fontWeight={'semibold'} mb={4}>
 						Live WCA Competition Software
 					</Heading>

@@ -26,9 +26,9 @@ export default async function handler(
 				)
 				if (user) {
 					await client.messages.create({
-						body: `Hello ${name}, you have successfully registered for the following events: ${selectedEvents.join(
-							', '
-						)}`,
+						body: `Hello ${name}, you have successfully registered for the following competitors: ${selectedEvents
+							.map((e: { label: string }) => e.label)
+							.join(', ')}`,
 						from: process.env.MY_NUMBER,
 						to: phoneNumber,
 					})
