@@ -9,15 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.17",
+    "@chakra-ui/react": "^2.5.1",
+    "@cubing/icons": "^1.0.6",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@next-auth/firebase-adapter": "^1.0.3",
     "@next/font": "13.1.6",
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "@wca/helpers": "^1.1.2",
+    "chakra-react-select": "^4.4.3",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
+    "firebase": "^9.17.1",
+    "firebase-admin": "^11.5.0",
+    "framer-motion": "^9.0.4",
     "next": "13.1.6",
+    "next-auth": "^4.19.2",
+    "next-connect": "^0.13.0",
+    "passport": "^0.6.0",
+    "passport-wca": "^1.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-firebase-hooks": "^5.1.1",
+    "react-phone-number-input": "^3.2.19",
+    "twilio": "^4.7.2",
     "typescript": "4.9.5"
   }
 }

@@ -12,6 +12,8 @@
 /.next/
 /out/
 
+/service_account.json
+
 # production
 /build
 
