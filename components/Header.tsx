@@ -62,10 +62,15 @@ export default function Header(): ReactElement {
 			pb='5rem'
 			w='100vw'
 			justify-content='center'
-			direction={{ lg: 'row', md: 'column' }}>
+			direction={['column', 'row']}>
 			<Box left='0' w={{ base: '20%', md: '10%' }}>
 				<Link href='/'>
-					<Image h={12} w={12} src={'/nodus-orange.png'} alt='Nodus icon' />
+					<Image
+						h={12}
+						w={12}
+						src={'/dropofftable.png'}
+						alt='Drop Off Table icon'
+					/>
 				</Link>
 			</Box>
 
@@ -128,6 +133,9 @@ export default function Header(): ReactElement {
 			<Box
 				cursor='pointer'
 				display={{ base: 'block', md: 'none' }}
+				right={5}
+				top={5}
+				position='absolute'
 				onClick={handleToggle}
 				mr='1rem'>
 				<svg

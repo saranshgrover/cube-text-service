@@ -1,5 +1,14 @@
 import React from 'react'
-import { Box, Flex, Heading, Text, Button, Image, Grid } from '@chakra-ui/react'
+import {
+	Box,
+	Flex,
+	Heading,
+	Text,
+	Button,
+	Image,
+	Grid,
+	Stack,
+} from '@chakra-ui/react'
 import Link from 'next/link'
 
 const LandingPage: React.FC = () => {
@@ -17,15 +26,15 @@ const LandingPage: React.FC = () => {
 					mx='auto'
 					textAlign='center'>
 					<Image
-						w={36}
-						h={36}
-						src='/nodus-orange.png'
+						w={64}
+						h={64}
+						src='/dropofftable.png'
 						alt='cubing competition'
 						mb={10}
 					/>
 
 					<Heading as='h1' size='4xl' fontWeight='bold' mb={2}>
-						Nodus
+						Drop Off Table
 					</Heading>
 					<Heading as='p' size='md' fontWeight={'semibold'} mb={4}>
 						Live WCA Competition Software
@@ -34,9 +43,17 @@ const LandingPage: React.FC = () => {
 						Get real-time updates and notifications during cubing competitions
 						sent straight to your phone via text message.
 					</Text>
-					<Flex justify='center' alignItems='center' flexWrap='wrap' mb={12}>
+					<Stack
+						direction={['column', 'row']}
+						justify='center'
+						align='center'
+						mb={12}>
 						<Link href='/competitions'>
-							<Button size='lg' colorScheme='blue' variant='solid' mr={6}>
+							<Button
+								size='lg'
+								colorScheme='blue'
+								variant='solid'
+								mr={{ sm: 0, lg: 6 }}>
 								For Competitors
 							</Button>
 						</Link>
@@ -45,7 +62,7 @@ const LandingPage: React.FC = () => {
 								For Organizers
 							</Button>
 						</Link>
-					</Flex>
+					</Stack>
 				</Flex>
 			</Box>
 		</>

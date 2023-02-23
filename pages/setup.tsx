@@ -39,8 +39,8 @@ const Pricing = () => {
 			<Image
 				w={36}
 				h={36}
-				src='/nodus-orange.png'
-				alt='cubing competition'
+				src={'/dropofftable.png'}
+				alt='Drop Off Table icon'
 				mb={10}
 			/>
 			<Heading as='h1' size='xl' mb='8'>

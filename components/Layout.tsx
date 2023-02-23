@@ -8,7 +8,7 @@ export default function Layout({
 	return (
 		<Flex direction='column' w='100vw' minH='100vh'>
 			<Header />
-			<Box mb={12} mx={20}>
+			<Box mb={12} mx={[10, 20]}>
 				{children}
 			</Box>
 		</Flex>
