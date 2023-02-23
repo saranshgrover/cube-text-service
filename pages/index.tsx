@@ -10,10 +10,12 @@ import {
 	Stack,
 } from '@chakra-ui/react'
 import Link from 'next/link'
+import Head from '@/components/head'
 
 const LandingPage: React.FC = () => {
 	return (
 		<>
+			<Head title='Drop Off Table' />
 			<Box
 				w='100%'
 				minH='100vh'

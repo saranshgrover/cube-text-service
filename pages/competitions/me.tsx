@@ -15,6 +15,7 @@ import { ORIGIN_URL } from '@/config'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import Head from '@/components/head'
 
 interface Props {}
 
@@ -52,55 +53,58 @@ const UpcomingCompetitionsPage: React.FC<Props> = ({}) => {
 	const listBg = useColorModeValue('whiteAlpha.', 'blackAlpha.')
 	if (!all) return <></>
 	return (
-		<Box bg={`${listBg}800`} p={8} rounded='md'>
-			<Heading mb={4} size='lg'>
-				Your Managable Competitions
-			</Heading>
-			<List spacing={4}>
-				{all.map((comp) => (
-					<ListItem
-						key={comp.id}
-						borderBottom='1px'
-						_first={{ borderTop: '1px' }}>
-						<Flex align='center' justify='space-between' w='100%' px={4}>
-							<Box bg={`${listBg}700`} p={4} rounded='md'>
-								<Heading as='a' size='md'>
-									{comp.name}
-								</Heading>
-								<Text mt={2} fontSize='sm'>
-									{`${comp.city}`}
-								</Text>
-								<Text mt={2} fontSize='sm'>
-									{new Date(comp.start_date).toLocaleDateString()}
-								</Text>
-							</Box>
-							<ButtonGroup>
-								{added?.added.some((s) => s === comp.id) ? (
-									<Link href={`/competition/${comp.id}/manage`}>
-										<Button variant='solid' colorScheme='blue'>
-											Manage
+		<>
+			<Head title='Competitions - Drop Off Table' />
+			<Box bg={`${listBg}800`} p={8} rounded='md'>
+				<Heading mb={4} size='lg'>
+					Your Managable Competitions
+				</Heading>
+				<List spacing={4}>
+					{all.map((comp) => (
+						<ListItem
+							key={comp.id}
+							borderBottom='1px'
+							_first={{ borderTop: '1px' }}>
+							<Flex align='center' justify='space-between' w='100%' px={4}>
+								<Box bg={`${listBg}700`} p={4} rounded='md'>
+									<Heading as='a' size='md'>
+										{comp.name}
+									</Heading>
+									<Text mt={2} fontSize='sm'>
+										{`${comp.city}`}
+									</Text>
+									<Text mt={2} fontSize='sm'>
+										{new Date(comp.start_date).toLocaleDateString()}
+									</Text>
+								</Box>
+								<ButtonGroup>
+									{added?.added.some((s) => s === comp.id) ? (
+										<Link href={`/competition/${comp.id}/manage`}>
+											<Button variant='solid' colorScheme='blue'>
+												Manage
+											</Button>
+										</Link>
+									) : added?.eligible.some((s) => s === comp.id) ? (
+										<Button
+											onClick={() => addCompetition(comp.id)}
+											variant='solid'
+											colorScheme='blue'>
+											Setup Now
 										</Button>
-									</Link>
-								) : added?.eligible.some((s) => s === comp.id) ? (
-									<Button
-										onClick={() => addCompetition(comp.id)}
-										variant='solid'
-										colorScheme='blue'>
-										Setup Now
-									</Button>
-								) : (
-									<Link href={`mailto:contact@saranshgrover.com`}>
-										<Button variant='solid' colorScheme='red'>
-											Request Setup
-										</Button>
-									</Link>
-								)}
-							</ButtonGroup>
-						</Flex>
-					</ListItem>
-				))}
-			</List>
-		</Box>
+									) : (
+										<Link href={`mailto:contact@saranshgrover.com`}>
+											<Button variant='solid' colorScheme='red'>
+												Request Setup
+											</Button>
+										</Link>
+									)}
+								</ButtonGroup>
+							</Flex>
+						</ListItem>
+					))}
+				</List>
+			</Box>
+		</>
 	)
 }
 
