@@ -1,6 +1,23 @@
 import { NodusActivity } from '@/types/activity'
 import { firestore } from '@/firebase/adminDb'
-import { Venue } from '@wca/helpers'
+import { activityCodeToName, Venue } from '@wca/helpers'
+const authToken = process.env.TWILIO_AUTH_TOKEN
+const accountSid = process.env.TWILIO_ACCOUNT_SID
+
+function parseRole(role: string) {
+	switch (role) {
+		case 'competitor':
+			return 'to COMPETE'
+		case 'staff-judge':
+			return 'to JUDGE'
+		case 'staff-scrambler':
+			return 'to SCRAMBLE'
+		case 'staff-runner':
+			return 'to RUN'
+		default:
+			return ''
+	}
+}
 
 export async function updateGroupAndNotify(
 	competitionId: string,
@@ -71,8 +88,49 @@ export async function updateGroupAndNotify(
 			.collection('competitions')
 			.doc(competitionId)
 			.update(newCompetition)
+		if (notify === 'yes') updateCompetitors(activity, competitionId)
 		return true
 	} catch (err) {
 		return false
+	}
+}
+
+async function updateCompetitors(
+	activity: NodusActivity,
+	competitionId: string
+) {
+	const twilio = require('twilio')(accountSid, authToken)
+	const activityName = activityCodeToName(activity.activityCode)
+	try {
+		const competitorsSnapshot = await firestore
+			.collection('competitions')
+			.doc(competitionId)
+			.collection('users')
+			.where('activityIds', 'array-contains', activity.id)
+			.get()
+		if (competitorsSnapshot.empty) return
+		else {
+			for (const doc of competitorsSnapshot.docs) {
+				const user = doc.data()
+				const number = user.phoneNumber
+				const assignment = user.assignments.find(
+					(a: any) => a.activityId === activity.id
+				)
+				const message =
+					activity.status === 'ongoing'
+						? `Now Calling: ${activityName}. ${
+								user.personName
+						  } is scheduled ${parseRole(assignment.assignmentCode ?? '')}`
+						: `Now Ending: ${activityName} has ended`
+				twilio.messages.create({
+					body: message,
+					from: process.env.TWILIO_MESSAGING_SID,
+					to: number,
+				})
+			}
+		}
+	} catch (err) {
+		console.log(err)
+		return
 	}
 }
