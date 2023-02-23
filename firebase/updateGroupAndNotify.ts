@@ -1,6 +1,7 @@
 import { NodusActivity } from '@/types/activity'
 import { firestore } from '@/firebase/adminDb'
 import { activityCodeToName, Venue } from '@wca/helpers'
+import Twilio from 'twilio/lib/rest/Twilio'
 const authToken = process.env.TWILIO_AUTH_TOKEN
 const accountSid = process.env.TWILIO_ACCOUNT_SID
 
@@ -88,7 +89,7 @@ export async function updateGroupAndNotify(
 			.collection('competitions')
 			.doc(competitionId)
 			.update(newCompetition)
-		if (notify === 'yes') updateCompetitors(activity, competitionId)
+		if (notify === 'yes') await updateCompetitors(activity, competitionId)
 		return true
 	} catch (err) {
 		return false
@@ -99,7 +100,7 @@ async function updateCompetitors(
 	activity: NodusActivity,
 	competitionId: string
 ) {
-	const twilio = require('twilio')(accountSid, authToken)
+	const twilio: Twilio = require('twilio')(accountSid, authToken)
 	const activityName = activityCodeToName(activity.activityCode)
 	try {
 		const competitorsSnapshot = await firestore
@@ -122,11 +123,12 @@ async function updateCompetitors(
 								user.personName
 						  } is scheduled ${parseRole(assignment.assignmentCode ?? '')}`
 						: `Now Ending: ${activityName} has ended`
-				twilio.messages.create({
+				const res = await twilio.messages.create({
 					body: message,
 					from: process.env.TWILIO_MESSAGING_SID,
 					to: number,
 				})
+				console.log(res.status)
 			}
 		}
 	} catch (err) {
