@@ -91,7 +91,11 @@ export default function UpdateActivityModal({
 					</FormControl>
 					{status !== selectedActivity?.status && status !== 'pending' && (
 						<FormControl>
-							<Checkbox size='lg' colorScheme='green' isChecked={updateUsers}>
+							<Checkbox
+								size='lg'
+								colorScheme='green'
+								isChecked={updateUsers}
+								onChange={(e) => setUpdateUsers(e.target.checked)}>
 								{`Send notifications to all competitiors/staff about the ${
 									status === 'completed' ? 'closing' : 'opening'
 								} of this group`}
