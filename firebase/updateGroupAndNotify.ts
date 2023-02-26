@@ -128,7 +128,6 @@ async function updateCompetitors(
 					from: process.env.TWILIO_MESSAGING_SID,
 					to: number,
 				})
-				console.log(res.status)
 			}
 		}
 	} catch (err) {
