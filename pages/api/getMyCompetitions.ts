@@ -31,6 +31,7 @@ export default async function handler(
 			}
 		)
 		const competitions = await wcaRes.json()
+		console.log(competitions)
 		const sortedCompetitions = competitions
 			? competitions.sort(function (a: any, b: any) {
 					// @ts-ignore

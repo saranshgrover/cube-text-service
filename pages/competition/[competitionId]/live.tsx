@@ -15,5 +15,7 @@ export default function Live(props: Props) {
 				<Spinner />
 			</Center>
 		)
-	return <CompetitionManager competitionId={competitionId as string} />
+	return (
+		<CompetitionManager live={true} competitionId={competitionId as string} />
+	)
 }

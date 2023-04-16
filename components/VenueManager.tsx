@@ -1,6 +1,14 @@
 import { NodusActivity } from '@/types/activity'
 import { useColorModeValue } from '@chakra-ui/color-mode'
-import { Box, Circle, Flex, Grid, GridItem, Heading } from '@chakra-ui/layout'
+import {
+	Box,
+	Circle,
+	Flex,
+	Grid,
+	GridItem,
+	Heading,
+	Center,
+} from '@chakra-ui/layout'
 import { Competition, Venue } from '@wca/helpers'
 import React from 'react'
 import ActivityList from './ActivityList'
@@ -8,9 +16,10 @@ import ActivityList from './ActivityList'
 type Props = {
 	venue: Venue
 	competition: Competition
+	live: boolean
 }
 
-export default function VenueManager({ venue, competition }: Props) {
+export default function VenueManager({ venue, competition, live }: Props) {
 	const rooms = venue.rooms
 	console.log(rooms.length)
 	const border = useColorModeValue('black', 'white')
@@ -32,7 +41,7 @@ export default function VenueManager({ venue, competition }: Props) {
 					key={room.id}
 					border='1px'
 					borderRadius={'md'}
-					h={{ sm: '30vh', lg: '70vh' }}>
+					h={{ sm: '30vh', lg: live ? '80vh' : '70vh' }}>
 					<Flex
 						h={{ sm: '20%', lg: 'auto' }}
 						p={2}
@@ -50,10 +59,11 @@ export default function VenueManager({ venue, competition }: Props) {
 						<Heading>{room.name}</Heading>
 					</Flex>
 					<Box
-						h={{ sm: '75%', lg: 'auto' }}
-						maxH={{ sm: '75%', lg: '85%' }}
+						h={{ sm: '75%', lg: '70%' }}
+						maxH={{ sm: '75%', lg: '100%' }}
 						overflowY='auto'>
 						<ActivityList
+							live={live}
 							competitionId={competition.id}
 							roomId={room.id}
 							venueId={venue.id}

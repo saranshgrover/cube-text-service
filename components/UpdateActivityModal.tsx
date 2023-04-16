@@ -94,7 +94,8 @@ export default function UpdateActivityModal({
 							<Checkbox
 								size='lg'
 								colorScheme='green'
-								isChecked={updateUsers}
+								defaultChecked={false}
+								// isChecked={updateUsers}
 								onChange={(e) => setUpdateUsers(e.target.checked)}>
 								{`Send notifications to all competitiors/staff about the ${
 									status === 'completed' ? 'closing' : 'opening'

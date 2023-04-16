@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, List, ListItem, Text } from '@chakra-ui/layout'
-import { parseActivityCode } from '@wca/helpers'
+import { parseActivityCode, activityCodeToName } from '@wca/helpers'
 import { NodusActivity } from '@/types/activity'
 import React, { useMemo, useState } from 'react'
 import '@cubing/icons'
@@ -10,6 +10,7 @@ type Props = {
 	roomId: number
 	venueId: number
 	competitionId: string
+	live: boolean
 }
 
 export default function ActivityList({
@@ -17,6 +18,7 @@ export default function ActivityList({
 	roomId,
 	venueId,
 	competitionId,
+	live,
 }: Props) {
 	const allActivities = useMemo(
 		() =>
@@ -43,45 +45,87 @@ export default function ActivityList({
 
 	return (
 		<>
-			<List px={2} spacing={2}>
-				{allActivities.map((activity) => (
-					<ListItem
-						borderRadius={'md'}
-						bgColor={
-							activity.status === 'ongoing'
-								? 'green'
-								: activity.status === 'completed'
-								? 'dimgray'
-								: ''
-						}
-						w='100%'
-						as='button'
-						onClick={() => {
-							setSelectedActivity(activity)
-						}}
-						key={activity.id}
-						textAlign='left'
-						px={1}
-						pt={2}
-						pb={3}
-						_hover={{
-							bg:
-								!activity.status || activity.status === 'pending'
-									? 'whiteAlpha.300'
-									: '',
-						}}>
-						<Flex gap={2}>
-							{!isNaN(Number(activity.activityCode.slice(0, 1))) && (
-								<Box
-									className={`cubing-icon event-${
-										parseActivityCode(activity.activityCode).eventId
-									}`}></Box>
-							)}
-							<Heading fontSize={'md'}>{activity.name}</Heading>
-						</Flex>
-						<Text>{new Date(activity.startTime).toLocaleString()}</Text>
-					</ListItem>
-				))}
+			<List px={2}>
+				{live
+					? allActivities
+							.filter((activity) => activity.status === 'ongoing')
+							.map((activity) => (
+								<ListItem
+									borderRadius={'md'}
+									w='100%'
+									h='100%'
+									as='button'
+									key={activity.id}
+									textAlign='center'
+									px={1}
+									pt={2}
+									pb={3}>
+									<Flex
+										height={'100%'}
+										justify='center'
+										align='center'
+										direction={'column'}
+										gap={2}>
+										{!isNaN(Number(activity.activityCode.slice(0, 1))) && (
+											<Box
+												fontSize={'60'}
+												className={`cubing-icon event-${
+													parseActivityCode(activity.activityCode).eventId
+												}`}></Box>
+										)}
+										<Heading size='2xl'>
+											{activityCodeToName(
+												parseActivityCode(activity.activityCode).eventId
+											)}
+										</Heading>
+
+										<Heading size='4xl'>
+											Group{' '}
+											{parseActivityCode(activity.activityCode).groupNumber}
+										</Heading>
+									</Flex>
+									{/* <Text>{new Date(activity.startTime).toLocaleString()}</Text> */}
+								</ListItem>
+							))
+					: allActivities.map((activity) => (
+							<ListItem
+								h='100%'
+								borderRadius={'md'}
+								bgColor={
+									activity.status === 'ongoing'
+										? 'green'
+										: activity.status === 'completed'
+										? 'dimgray'
+										: ''
+								}
+								w='100%'
+								as='button'
+								onClick={() => {
+									setSelectedActivity(activity)
+								}}
+								key={activity.id}
+								textAlign='left'
+								px={1}
+								pt={2}
+								pb={3}
+								_hover={{
+									bg:
+										!activity.status || activity.status === 'pending'
+											? 'whiteAlpha.300'
+											: '',
+								}}>
+								<Flex gap={2}>
+									{!isNaN(Number(activity.activityCode.slice(0, 1))) && (
+										<Box
+											className={`cubing-icon event-${
+												parseActivityCode(activity.activityCode).eventId
+											}`}></Box>
+									)}
+									<Heading fontSize={'md'}>{activity.name}</Heading>
+								</Flex>
+								<Text>{new Date(activity.startTime).toLocaleString()}</Text>
+							</ListItem>
+					  ))}
 			</List>
 			<UpdateActivityModal
 				competitionId={competitionId}

@@ -14,9 +14,10 @@ import VenueManager from './VenueManager'
 
 type Props = {
 	competitionId: string
+	live?: boolean
 }
 
-export default function CompetitionManager({ competitionId }: Props) {
+export default function CompetitionManager({ competitionId, live }: Props) {
 	const toast = useToast()
 	async function handleUpdate() {
 		setSyncLoading(true)
@@ -60,29 +61,30 @@ export default function CompetitionManager({ competitionId }: Props) {
 	}
 	return (
 		<Box h='100%' w='100%'>
-			<Flex w='100%' align='center' gap={2}>
-				<Box w='80%'>
-					<FormLabel>Venue</FormLabel>
-					<Select
-						variant='filled'
-						value={selectedVenue}
-						onChange={(v) => v && setSelectedVenue(v)}
-						// @ts-ignore
-						options={competition.schedule.venues.map((venue) => ({
-							label: venue.name,
-							value: venue.id,
-						}))}
-					/>
-				</Box>
-				<Button
-					loadingText='Loading '
-					isLoading={syncLoading}
-					isDisabled={syncLoading}
-					onClick={() => handleUpdate()}>
-					Sync
-				</Button>
-			</Flex>
-
+			{!live && (
+				<Flex w='100%' align='center' gap={2}>
+					<Box w='80%'>
+						<FormLabel>Venue</FormLabel>
+						<Select
+							variant='filled'
+							value={selectedVenue}
+							onChange={(v) => v && setSelectedVenue(v)}
+							// @ts-ignore
+							options={competition.schedule.venues.map((venue) => ({
+								label: venue.name,
+								value: venue.id,
+							}))}
+						/>
+					</Box>
+					<Button
+						loadingText='Loading '
+						isLoading={syncLoading}
+						isDisabled={syncLoading}
+						onClick={() => handleUpdate()}>
+						Sync
+					</Button>
+				</Flex>
+			)}
 			{selectedVenue && competition && (
 				<VenueManager
 					venue={
@@ -91,6 +93,7 @@ export default function CompetitionManager({ competitionId }: Props) {
 						)!
 					}
 					competition={competition}
+					live={live ?? false}
 				/>
 			)}
 		</Box>
