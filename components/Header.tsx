@@ -53,7 +53,7 @@ export default function Header(): ReactElement {
 	)
 	const { data, status } = useSession()
 	const router = useRouter()
-	const isLive = router.pathname.includes('live')
+	const isLive = useMemo(() => router.pathname.includes('live'), [router])
 
 	return (
 		<>

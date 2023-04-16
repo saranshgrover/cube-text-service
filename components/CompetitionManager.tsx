@@ -2,7 +2,7 @@ import { clientApp } from '@/firebase/db'
 import { FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
 import { Box, Center, Flex } from '@chakra-ui/layout'
-import { Button, useToast } from '@chakra-ui/react'
+import { Button, useToast, Heading } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { doc, getFirestore } from '@firebase/firestore'
 import { Competition } from '@wca/helpers'
@@ -84,6 +84,11 @@ export default function CompetitionManager({ competitionId, live }: Props) {
 						Sync
 					</Button>
 				</Flex>
+			)}
+			{live && (
+				<Center>
+					<Heading>{competition.name}</Heading>
+				</Center>
 			)}
 			{selectedVenue && competition && (
 				<VenueManager
