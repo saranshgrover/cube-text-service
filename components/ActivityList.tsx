@@ -68,7 +68,7 @@ export default function ActivityList({
 										gap={2}>
 										{!isNaN(Number(activity.activityCode.slice(0, 1))) && (
 											<Box
-												fontSize={'60'}
+												fontSize={'100'}
 												className={`cubing-icon event-${
 													parseActivityCode(activity.activityCode).eventId
 												}`}></Box>
