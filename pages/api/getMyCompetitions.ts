@@ -31,10 +31,12 @@ export default async function handler(
 			}
 		)
 		const competitions = await wcaRes.json()
-		const sortedCompetitions = competitions.sort(function (a: any, b: any) {
-			// @ts-ignore
-			return new Date(a.start_date) - new Date(b.start_date)
-		})
+		const sortedCompetitions = competitions
+			? competitions.sort(function (a: any, b: any) {
+					// @ts-ignore
+					return new Date(a.start_date) - new Date(b.start_date)
+			  })
+			: []
 		const addedCompetitions = await getCompetitionIds()
 		res.json({
 			allCompetitions: sortedCompetitions,
