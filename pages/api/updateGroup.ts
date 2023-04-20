@@ -22,7 +22,6 @@ export default async function handler(
 			secret,
 			req,
 		})
-		const body = JSON.parse(req.body)
 		const { competitionId, activity, notify, venueId, roomId, parentActivity } =
 			JSON.parse(req.body)
 		if (
@@ -39,16 +38,20 @@ export default async function handler(
 			const allowed = await getCompetitionAllowed(competitionId, userId)
 			if (!allowed) res.status(403).json({ error: 'Unauthorized' })
 			else {
-				const done = await updateGroupAndNotify(
-					competitionId,
-					activity,
-					notify,
-					Number(venueId),
-					Number(roomId),
-					parentActivity
-				)
-				if (done) res.status(400).json({ status: 'done' })
-				else res.status(404).json({ error: 'Unable to update' })
+				try {
+					const done = await updateGroupAndNotify(
+						competitionId,
+						activity,
+						notify,
+						Number(venueId),
+						Number(roomId),
+						parentActivity
+					)
+					if (done) res.status(400).json({ status: 'done' })
+					else res.status(404).json({ error: 'Unable to update' })
+				} catch (err) {
+					res.status(404).json({ error: err })
+				}
 			}
 		} else res.status(403).json({ error: 'Unauthorized' })
 	}
