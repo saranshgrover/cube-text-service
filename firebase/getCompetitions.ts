@@ -1,6 +1,6 @@
 import { clientDb } from './db'
 import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
-import { Competition } from '@/types/competition'
+import { Competition } from '@wca/helpers'
 
 export async function getAllCompetitions() {
 	const q = query(collection(clientDb, 'competitions'))

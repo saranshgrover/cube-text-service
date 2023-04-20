@@ -13,7 +13,7 @@ import {
 	Spinner,
 	Center,
 } from '@chakra-ui/react'
-import { Competition } from '@wca/helpers'
+import { Competition } from '@wca/helpers/'
 import { getUpcomingCompetitions } from '@/firebase/getCompetitions'
 import Link from 'next/link'
 import Head from '@/components/head'
@@ -23,11 +23,13 @@ interface Props {}
 
 const UpcomingCompetitionsPage: React.FC<Props> = () => {
 	const listBg = useColorModeValue('whiteAlpha.', 'blackAlpha.')
-	const [competitions, setCompetitions] = useState<any>()
+	const [data, setCompetitions] = useState<{
+		competitions: Competition[] | null
+	}>()
 	const toast = useToast()
 	useEffect(() => {
 		getUpcomingCompetitions()
-			.then((res) => setCompetitions(res))
+			.then((res) => setCompetitions({ competitions: res }))
 			.catch((_) => toast({ title: 'Error', status: 'error' }))
 	}, [])
 	return (
@@ -38,9 +40,9 @@ const UpcomingCompetitionsPage: React.FC<Props> = () => {
 					Upcoming Competitions
 				</Heading>
 				<List spacing={4}>
-					{competitions ? (
+					{data?.competitions ? (
 						<>
-							{competitions.map((comp) => (
+							{data.competitions.map((comp) => (
 								<ListItem
 									key={comp.id}
 									borderBottom='1px'
