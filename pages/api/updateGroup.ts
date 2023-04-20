@@ -37,21 +37,19 @@ export default async function handler(
 			// check if user is allowed
 			const allowed = await getCompetitionAllowed(competitionId, userId)
 			if (!allowed) res.status(403).json({ error: 'Unauthorized' })
-			else {
-				try {
-					const done = await updateGroupAndNotify(
-						competitionId,
-						activity,
-						notify,
-						Number(venueId),
-						Number(roomId),
-						parentActivity
-					)
-					if (done) res.status(400).json({ status: 'done' })
-					else res.status(404).json({ error: 'Unable to update' })
-				} catch (err) {
-					res.status(404).json({ error: err })
-				}
+			try {
+				const done = await updateGroupAndNotify(
+					competitionId,
+					activity,
+					notify,
+					Number(venueId),
+					Number(roomId),
+					parentActivity
+				)
+				if (done) res.status(400).json({ status: 'done' })
+				else res.status(404).json({ error: 'Unable to update' })
+			} catch (err) {
+				res.status(404).json({ error: err })
 			}
 		} else res.status(403).json({ error: 'Unauthorized' })
 	}

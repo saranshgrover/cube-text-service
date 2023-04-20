@@ -123,7 +123,7 @@ async function updateCompetitors(
 								user.personName
 						  } is scheduled ${parseRole(assignment.assignmentCode ?? '')}`
 						: `Now Ending: ${activityName} has ended`
-				twilio.messages.create({
+				await twilio.messages.create({
 					body: message,
 					from: process.env.TWILIO_MESSAGING_SID,
 					to: number,

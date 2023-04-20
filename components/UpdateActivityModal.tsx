@@ -50,6 +50,7 @@ export default function UpdateActivityModal({
 					activity: { ...activity, status },
 					notify: updateUsers && status !== 'pending' ? 'yes' : 'no',
 				}
+				console.log(data)
 				const update = await fetch(`/api/updateGroup`, {
 					method: 'POST',
 					body: JSON.stringify(data),
@@ -73,7 +74,7 @@ export default function UpdateActivityModal({
 	}
 	const toast = useToast()
 	const [status, setStatus] = React.useState(selectedActivity?.status)
-	const [updateUsers, setUpdateUsers] = React.useState(true)
+	const [updateUsers, setUpdateUsers] = React.useState(false)
 	const [loading, setLoading] = React.useState(false)
 	useEffect(() => {
 		setStatus(selectedActivity?.status)
@@ -111,9 +112,8 @@ export default function UpdateActivityModal({
 							<Checkbox
 								size='lg'
 								colorScheme='green'
-								defaultChecked={false}
-								// isChecked={updateUsers}
-								onChange={(e) => setUpdateUsers(e.target.checked)}>
+								isChecked={updateUsers}
+								onChange={(e) => setUpdateUsers(e.target.checked!)}>
 								{`Send notifications to all competitiors/staff about the ${
 									status === 'completed' ? 'closing' : 'opening'
 								} of this group`}
