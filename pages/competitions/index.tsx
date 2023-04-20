@@ -19,13 +19,11 @@ import Link from 'next/link'
 import Head from '@/components/head'
 import { useEffect, useState } from 'react'
 
-interface Props {
-	competitions: Competition[]
-}
+interface Props {}
 
 const UpcomingCompetitionsPage: React.FC<Props> = () => {
 	const listBg = useColorModeValue('whiteAlpha.', 'blackAlpha.')
-	const [competitions, setCompetitions] = useState<Competition[]>()
+	const [competitions, setCompetitions] = useState<any>()
 	const toast = useToast()
 	useEffect(() => {
 		getUpcomingCompetitions()
