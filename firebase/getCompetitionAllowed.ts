@@ -15,6 +15,7 @@ export async function getCompetitionAllowed(
 		const userInfo = user.data() as Person
 		if (userInfo.roles?.includes('organizer')) return true
 		if (userInfo.roles?.includes('delegate')) return true
+		if (userInfo.roles?.includes('staff-other')) return true
 
 		return false
 	} catch (err) {
