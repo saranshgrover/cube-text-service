@@ -89,8 +89,10 @@ export async function updateGroupAndNotify(
 			.collection('competitions')
 			.doc(competitionId)
 			.update(newCompetition)
-		if (notify === 'yes') await updateCompetitors(activity, competitionId)
-		return true
+		if (notify === 'yes') {
+			return updateCompetitors(activity, competitionId)
+		}
+		return false
 	} catch (err) {
 		return false
 	}
@@ -109,7 +111,7 @@ async function updateCompetitors(
 			.collection('users')
 			.where('activityIds', 'array-contains', activity.id)
 			.get()
-		if (competitorsSnapshot.empty) return
+		if (competitorsSnapshot.empty) return false
 		else {
 			for (const doc of competitorsSnapshot.docs) {
 				const user = doc.data()
@@ -129,6 +131,7 @@ async function updateCompetitors(
 					to: number,
 				})
 			}
+			return true
 		}
 	} catch (err) {
 		console.log(err)
