@@ -8,18 +8,30 @@ import {
 	Flex,
 	Button,
 	ButtonGroup,
+	useToast,
+	Skeleton,
+	Spinner,
+	Center,
 } from '@chakra-ui/react'
 import { Competition } from '@wca/helpers'
 import { getUpcomingCompetitions } from '@/firebase/getCompetitions'
 import Link from 'next/link'
 import Head from '@/components/head'
+import { useEffect, useState } from 'react'
 
 interface Props {
 	competitions: Competition[]
 }
 
-const UpcomingCompetitionsPage: React.FC<Props> = ({ competitions }) => {
+const UpcomingCompetitionsPage: React.FC<Props> = () => {
 	const listBg = useColorModeValue('whiteAlpha.', 'blackAlpha.')
+	const [competitions, setCompetitions] = useState<Competition[]>()
+	const toast = useToast()
+	useEffect(() => {
+		getUpcomingCompetitions()
+			.then((res) => setCompetitions(res))
+			.catch((_) => toast({ title: 'Error', status: 'error' }))
+	}, [])
 	return (
 		<>
 			<Head title='Competitions - Drop Off Table' />
@@ -28,43 +40,52 @@ const UpcomingCompetitionsPage: React.FC<Props> = ({ competitions }) => {
 					Upcoming Competitions
 				</Heading>
 				<List spacing={4}>
-					{competitions.map((comp) => (
-						<ListItem
-							key={comp.id}
-							borderBottom='1px'
-							_first={{ borderTop: '1px' }}>
-							<Flex
-								align='center'
-								justify='space-between'
-								w='100%'
-								px={4}
-								direction={{ base: 'column', md: 'row' }}>
-								<Box bg={`${listBg}700`} p={4} rounded='md'>
-									<Heading as='a' size='md'>
-										{comp.name}
-									</Heading>
-									<Text mt={2} fontSize='sm'>
-										{`${comp.schedule.venues[0].countryIso2}`}
-									</Text>
-									<Text mt={2} fontSize='sm'>
-										{new Date(comp.schedule.startDate).toLocaleDateString()}
-									</Text>
-								</Box>
-								<ButtonGroup>
-									<Link href={`/competition/${comp.id}/alerts`}>
-										<Button variant='solid' colorScheme='blue'>
-											Sign Up For Alerts
-										</Button>
-									</Link>
-									<Link href={`/competition/${comp.id}/live`}>
-										<Button variant='solid' colorScheme='red'>
-											Live Updates
-										</Button>
-									</Link>
-								</ButtonGroup>
-							</Flex>
-						</ListItem>
-					))}
+					{competitions ? (
+						<>
+							{competitions.map((comp) => (
+								<ListItem
+									key={comp.id}
+									borderBottom='1px'
+									_first={{ borderTop: '1px' }}>
+									<Flex
+										align='center'
+										justify='space-between'
+										w='100%'
+										px={4}
+										direction={{ base: 'column', md: 'row' }}>
+										<Box bg={`${listBg}700`} p={4} rounded='md'>
+											<Heading as='a' size='md'>
+												{comp.name}
+											</Heading>
+											<Text mt={2} fontSize='sm'>
+												{`${comp.schedule.venues[0].countryIso2}`}
+											</Text>
+											<Text mt={2} fontSize='sm'>
+												{comp.schedule.startDate}
+											</Text>
+										</Box>
+										<ButtonGroup>
+											<Link href={`/competition/${comp.id}/alerts`}>
+												<Button variant='solid' colorScheme='blue'>
+													Sign Up For Alerts
+												</Button>
+											</Link>
+											<Link href={`/competition/${comp.id}/live`}>
+												<Button variant='solid' colorScheme='red'>
+													Live Updates
+												</Button>
+											</Link>
+										</ButtonGroup>
+									</Flex>
+								</ListItem>
+							))}
+						</>
+					) : (
+						<Center>
+							<Spinner />
+							<Skeleton height={'30px'} />
+						</Center>
+					)}
 				</List>
 			</Box>
 		</>
@@ -72,13 +93,3 @@ const UpcomingCompetitionsPage: React.FC<Props> = ({ competitions }) => {
 }
 
 export default UpcomingCompetitionsPage
-
-// Get static props function to get list of competitions
-export async function getStaticProps() {
-	const competitions = await getUpcomingCompetitions()
-	return {
-		props: {
-			competitions,
-		},
-	}
-}
