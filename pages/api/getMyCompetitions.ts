@@ -18,7 +18,7 @@ export default async function handler(
 		var today = new Date()
 		var thirtyDaysAgo = new Date(
 			new Date().setDate(today.getDate() - 30)
-		).toLocaleDateString('en-CA')
+		).toISOString()
 
 		const wcaRes = await fetch(
 			`https://worldcubeassociation.org/api/v0/competitions?managed_by_me=true&start=${thirtyDaysAgo}`,
@@ -31,7 +31,6 @@ export default async function handler(
 			}
 		)
 		const competitions = await wcaRes.json()
-		console.log(competitions)
 		const sortedCompetitions = competitions
 			? competitions.sort(function (a: any, b: any) {
 					// @ts-ignore
