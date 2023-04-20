@@ -17,6 +17,7 @@ import {
 	Radio,
 	FormHelperText,
 	Checkbox,
+	useToast,
 } from '@chakra-ui/react'
 
 type Props = {
@@ -38,25 +39,42 @@ export default function UpdateActivityModal({
 }: Props) {
 	async function updateGroup() {
 		if (selectedActivity && selectedActivity.status !== status) {
-			const { parent, ...activity } = selectedActivity
-			const data = {
-				competitionId,
-				venueId,
-				roomId,
-				parentActivity: parentActivity ? parentActivity : null,
-				activity: { ...activity, status },
-				notify: updateUsers && status !== 'pending' ? 'yes' : 'no',
+			setLoading(true)
+			try {
+				const { parent, ...activity } = selectedActivity
+				const data = {
+					competitionId,
+					venueId,
+					roomId,
+					parentActivity: parentActivity ? parentActivity : null,
+					activity: { ...activity, status },
+					notify: updateUsers && status !== 'pending' ? 'yes' : 'no',
+				}
+				const update = await fetch(`/api/updateGroup`, {
+					method: 'POST',
+					body: JSON.stringify(data),
+				})
+				setLoading(false)
+				const res = await update.json()
+				if (res.error) {
+					setLoading(false)
+					toast({ title: res.error, status: 'error' })
+					onClose()
+				} else if (res.status === 'done') {
+					toast({ title: 'Updated', status: 'success' })
+					onClose()
+				}
+			} catch (e) {
+				setLoading(false)
+				toast({ title: `Error: ${e}`, status: 'error' })
+				onClose()
 			}
-			const update = await fetch(`/api/updateGroup`, {
-				method: 'POST',
-				body: JSON.stringify(data),
-			})
-			const res = await update.json()
-			if (res.status === 'done') onClose()
 		}
 	}
+	const toast = useToast()
 	const [status, setStatus] = React.useState(selectedActivity?.status)
 	const [updateUsers, setUpdateUsers] = React.useState(true)
+	const [loading, setLoading] = React.useState(false)
 	useEffect(() => {
 		setStatus(selectedActivity?.status)
 	}, [selectedActivity])
@@ -109,6 +127,7 @@ export default function UpdateActivityModal({
 						Cancel
 					</Button>
 					<Button
+						isLoading={loading}
 						isDisabled={status === selectedActivity?.status}
 						onClick={() => updateGroup()}
 						colorScheme={'blue'}>

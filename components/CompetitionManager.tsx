@@ -35,6 +35,11 @@ export default function CompetitionManager({ competitionId, live }: Props) {
 				colorScheme: 'green',
 			})
 			// router.reload()
+		} else {
+			toast({
+				title: 'Error',
+				status: 'error',
+			})
 		}
 	}
 	const router = useRouter()
