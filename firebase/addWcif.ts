@@ -15,7 +15,7 @@ export async function addWcif(wcif: Competition) {
 			wcaId: person.wcaId,
 		})
 	}
-	batch.set(compRef, { ...rest, persons: personRefs })
+	batch.set(compRef, { ...rest, persons: personRefs, complete: false })
 	const compPersonRef = firestore
 		.collection('competitions')
 		.doc(wcif.id)

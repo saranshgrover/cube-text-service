@@ -23,6 +23,9 @@ export default function CompetitionManager({ competitionId, live }: Props) {
 		setSyncLoading(true)
 		const res = await fetch('/api/updateWcif', {
 			method: 'POST',
+			body: JSON.stringify({
+				competitionId: competitionId,
+			}),
 		})
 		setSyncLoading(false)
 		if (res.ok) {

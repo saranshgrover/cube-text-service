@@ -25,14 +25,14 @@ export async function updateWcif(prevWcif: Competition, newWcif: Competition) {
 			const activityIds = person.assignments?.map((a) => a.activityId) || []
 			const docs = await firestore
 				.collection('competitions')
-				.doc('PretzelMania2023')
+				.doc(prevWcif.id)
 				.collection('users')
 				.where('personName', '==', person.name)
 				.get()
 			for (const doc of docs.docs) {
 				await firestore
 					.collection('competitions')
-					.doc('PretzelMania2023')
+					.doc(prevWcif.id)
 					.collection('users')
 					.doc(doc.id)
 					.update({ assignments, activityIds })

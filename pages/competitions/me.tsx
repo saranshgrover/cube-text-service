@@ -8,6 +8,7 @@ import {
 	Flex,
 	Button,
 	ButtonGroup,
+	useToast,
 } from '@chakra-ui/react'
 import { APICompetition, Competition } from '@/types/competition'
 import Link from 'next/link'
@@ -21,6 +22,8 @@ interface Props {}
 
 const UpcomingCompetitionsPage: React.FC<Props> = ({}) => {
 	const [all, setAll] = useState<APICompetition[] | null>()
+	const [settingUp, setSettingUp] = useState(false)
+	const toast = useToast()
 	const [added, setAdded] = useState<{
 		eligible: string[]
 		added: string[]
@@ -38,14 +41,24 @@ const UpcomingCompetitionsPage: React.FC<Props> = ({}) => {
 	}
 
 	async function addCompetition(id: string) {
-		const res = await fetch(`${ORIGIN_URL}/api/setup`, {
-			method: 'POST',
-			body: JSON.stringify({
-				id,
-			}),
-		})
-		const json = await res.json()
-		if (json.status === 'success') router.push(`/competition/${id}/manage`)
+		setSettingUp(true)
+		try {
+			const res = await fetch(`${ORIGIN_URL}/api/setup`, {
+				method: 'POST',
+				body: JSON.stringify({
+					id,
+				}),
+			})
+			const json = await res.json()
+			setSettingUp(false)
+			if (json.status === 'success') router.push(`/competition/${id}/manage`)
+		} catch (err) {
+			setSettingUp(false)
+			toast({
+				title: 'Error - Please try again',
+				status: 'error',
+			})
+		}
 	}
 
 	const session = useSession()
@@ -86,6 +99,7 @@ const UpcomingCompetitionsPage: React.FC<Props> = ({}) => {
 										</Link>
 									) : added?.eligible.some((s) => s === comp.id) ? (
 										<Button
+											isLoading={settingUp}
 											onClick={() => addCompetition(comp.id)}
 											variant='solid'
 											colorScheme='blue'>

@@ -10,6 +10,7 @@ import {
 	Stack,
 	Image,
 	VStack,
+	Container,
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useSession, signIn } from 'next-auth/react'
@@ -50,7 +51,11 @@ const Pricing = () => {
 					Set Up Your WCA Competition
 				</Heading>
 				<Grid
-					templateColumns='repeat(3, 1fr)'
+					margin='0 auto'
+					maxW={'4xl'}
+					gridTemplateColumns={{ base: '', md: 'repeat(3, 1fr)' }}
+					gridAutoRows={'1fr'}
+					gridTemplateRows={{ base: '1fr', md: '' }}
 					gap={6}
 					// borderWidth='1px'
 					borderColor='gray.200'
@@ -59,11 +64,12 @@ const Pricing = () => {
 					{plans.map((plan, index) => (
 						<GridItem key={index}>
 							<Box
+								h='100%'
 								p='6'
 								borderWidth='1px'
-								borderColor='gray.200'
+								borderColor='gray.400'
 								borderRadius='lg'>
-								<VStack alignItems='flex-start'>
+								<VStack alignItems='center'>
 									<Heading as='h2' size='lg' mb='2'>
 										{plan.name}
 									</Heading>

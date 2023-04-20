@@ -15,7 +15,10 @@ export async function getAllCompetitions() {
 
 // Get upcoming competitions only
 export async function getUpcomingCompetitions() {
-	const q = query(collection(clientDb, 'competitions'))
+	const q = query(
+		collection(clientDb, 'competitions'),
+		where('complete', '==', false)
+	)
 	const querySnapshot = await getDocs(q)
 	const competitions: Competition[] = []
 	querySnapshot.forEach((doc) => {

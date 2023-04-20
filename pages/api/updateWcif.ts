@@ -17,14 +17,15 @@ export default async function handler(
 			secret,
 			req,
 		})
-		if (session && token) {
+		const { competitionId } = req.body
+		if (session && token && competitionId) {
 			const current = await firestore
 				.collection('competitions')
-				.doc('PretzelMania2023')
+				.doc(competitionId)
 				.get()
 			const currentComp = current.data()
 			const wcaRes = await fetch(
-				`https://worldcubeassociation.org/api/v0/competitions/PretzelMania2023/wcif`,
+				`https://worldcubeassociation.org/api/v0/competitions/${competitionId}/wcif`,
 				{
 					method: 'GET',
 					credentials: 'include',
@@ -37,7 +38,6 @@ export default async function handler(
 			if (currentComp) {
 				const res = await updateWcif(currentComp as Competition, wcif)
 				if (res === true) {
-					console.log('done')
 					response.status(200).json({})
 				}
 				if (res === false) {
@@ -47,7 +47,6 @@ export default async function handler(
 				response.status(403).json({})
 			}
 		}
-		console.log('hello?')
 		response.status(403).json({})
 	}
 }

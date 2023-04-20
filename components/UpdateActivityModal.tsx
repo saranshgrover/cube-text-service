@@ -47,7 +47,6 @@ export default function UpdateActivityModal({
 				activity: { ...activity, status },
 				notify: updateUsers && status !== 'pending' ? 'yes' : 'no',
 			}
-			console.log(data)
 			const update = await fetch(`/api/updateGroup`, {
 				method: 'POST',
 				body: JSON.stringify(data),

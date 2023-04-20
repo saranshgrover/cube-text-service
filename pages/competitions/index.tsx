@@ -33,7 +33,12 @@ const UpcomingCompetitionsPage: React.FC<Props> = ({ competitions }) => {
 							key={comp.id}
 							borderBottom='1px'
 							_first={{ borderTop: '1px' }}>
-							<Flex align='center' justify='space-between' w='100%' px={4}>
+							<Flex
+								align='center'
+								justify='space-between'
+								w='100%'
+								px={4}
+								direction={{ base: 'column', md: 'row' }}>
 								<Box bg={`${listBg}700`} p={4} rounded='md'>
 									<Heading as='a' size='md'>
 										{comp.name}
