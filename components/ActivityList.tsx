@@ -49,44 +49,62 @@ export default function ActivityList({
 				{live
 					? allActivities
 							.filter((activity) => activity.status === 'ongoing')
-							.map((activity) => (
-								<ListItem
-									borderRadius={'md'}
-									w='100%'
-									h='100%'
-									as='button'
-									key={activity.id}
-									textAlign='center'
-									px={1}
-									pt={2}
-									pb={3}>
-									<Flex
-										height={'100%'}
-										justify='center'
-										align='center'
-										direction={'column'}
-										gap={2}>
-										{!isNaN(Number(activity.activityCode.slice(0, 1))) && (
-											<Box
-												fontSize={'100'}
-												className={`cubing-icon event-${
-													parseActivityCode(activity.activityCode).eventId
-												}`}></Box>
-										)}
-										<Heading size='2xl'>
-											{activityCodeToName(
-												parseActivityCode(activity.activityCode).eventId
-											)}
-										</Heading>
+							.map((activity) => {
+								console.log(activity)
+								return (
+									<ListItem
+										borderRadius={'md'}
+										w='100%'
+										h='100%'
+										as='button'
+										key={activity.id}
+										textAlign='center'
+										px={1}
+										pt={2}
+										pb={3}>
+										<Flex
+											height={'100%'}
+											justify='center'
+											align='center'
+											direction={'column'}
+											gap={2}>
+											{activity.activityCode.includes('other') ? (
+												<Heading size='4xl'>
+													{activity.activityCode.substring(6)}
+												</Heading>
+											) : (
+												<>
+													{!isNaN(
+														Number(activity?.activityCode.slice(0, 1))
+													) && (
+														<Box
+															fontSize={'100'}
+															className={`cubing-icon event-${
+																parseActivityCode(activity?.activityCode)
+																	.eventId
+															}`}></Box>
+													)}
+													<Heading size='2xl'>
+														{
+															parseActivityCode(activity?.activityCode ?? '')
+																?.eventId
+														}
+													</Heading>
 
-										<Heading size='4xl'>
-											Group{' '}
-											{parseActivityCode(activity.activityCode).groupNumber}
-										</Heading>
-									</Flex>
-									{/* <Text>{new Date(activity.startTime).toLocaleString()}</Text> */}
-								</ListItem>
-							))
+													<Heading size='4xl'>
+														Group{' '}
+														{
+															parseActivityCode(activity.activityCode)
+																?.groupNumber
+														}
+													</Heading>
+												</>
+											)}
+										</Flex>
+										{/* <Text>{new Date(activity.startTime).toLocaleString()}</Text> */}
+									</ListItem>
+								)
+							})
 					: allActivities.map((activity) => (
 							<ListItem
 								h='100%'

@@ -1,6 +1,7 @@
 import CompetitionManager from '@/components/CompetitionManager'
 import { Center } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
+import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -8,8 +9,14 @@ type Props = {}
 
 export default function Manage(props: Props) {
 	const router = useRouter()
+	const { data, status } = useSession()
 	const { competitionId } = router.query
-	if (!router.isReady || !competitionId)
+	if (status === 'unauthenticated') {
+		signIn('wca', {
+			callbackUrl: router.asPath,
+		})
+	}
+	if (!router.isReady || !competitionId || status !== 'authenticated')
 		return (
 			<Center>
 				<Spinner />
