@@ -17,7 +17,7 @@ export default async function handler(
 			secret,
 			req,
 		})
-		const { competitionId } = req.body
+		const { competitionId } = JSON.parse(req.body)
 		if (session && token && competitionId) {
 			const current = await firestore
 				.collection('competitions')
