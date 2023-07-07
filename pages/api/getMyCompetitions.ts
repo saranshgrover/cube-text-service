@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { getToken } from 'next-auth/jwt'
 import { authOptions } from './auth/[...nextauth]'
+import { WCA_URL } from '@/config'
 const secret = process.env.NEXTAUTH_SECRET
 
 export default async function handler(
@@ -21,7 +22,7 @@ export default async function handler(
 		).toISOString()
 
 		const wcaRes = await fetch(
-			`https://worldcubeassociation.org/api/v0/competitions?managed_by_me=true&start=${thirtyDaysAgo}`,
+			`${WCA_URL}/api/v0/competitions?managed_by_me=true&start=${thirtyDaysAgo}`,
 			{
 				method: 'GET',
 				credentials: 'include',

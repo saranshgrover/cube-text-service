@@ -36,6 +36,7 @@
     "react-firebase-hooks": "^5.1.1",
     "react-phone-number-input": "^3.2.19",
     "twilio": "^4.7.2",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "zustand": "^4.3.7"
   }
 }

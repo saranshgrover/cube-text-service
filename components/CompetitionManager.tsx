@@ -5,12 +5,19 @@ import { Box, Center, Flex } from '@chakra-ui/layout'
 import { Button, useToast, Heading } from '@chakra-ui/react'
 import { Spinner } from '@chakra-ui/spinner'
 import { doc, getFirestore } from '@firebase/firestore'
-import { Competition } from '@wca/helpers'
+import { Competition, Person } from '@wca/helpers'
 import { Select } from 'chakra-react-select'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useDocumentData } from 'react-firebase-hooks/firestore'
+import {
+	useCollection,
+	useCollectionDataOnce,
+	useDocumentData,
+} from 'react-firebase-hooks/firestore'
 import VenueManager from './VenueManager'
+import useStore, { StoreState } from '@/config/store'
+import { clientDb } from '../firebase/db'
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore'
 
 type Props = {
 	competitionId: string
@@ -18,6 +25,20 @@ type Props = {
 }
 
 export default function CompetitionManager({ competitionId, live }: Props) {
+	const [snapshot, snapshotLoading, snapshotError] = useCollection(
+		collection(clientDb, 'competitions', competitionId, 'persons')
+	)
+	const store = useStore()
+	useEffect(() => {
+		if (snapshot && !snapshotLoading && !snapshotError) {
+			const competitors: Person[] = []
+			snapshot.forEach((doc) => {
+				competitors.push(doc.data() as Person)
+			})
+			store.setCompetitors(competitors)
+		}
+	}, [snapshot, snapshotLoading, snapshotError])
+
 	const toast = useToast()
 	async function handleUpdate() {
 		setSyncLoading(true)

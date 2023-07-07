@@ -92,7 +92,7 @@ export async function updateGroupAndNotify(
 		if (notify === 'yes') {
 			return updateCompetitors(activity, competitionId)
 		}
-		return false
+		return true
 	} catch (err) {
 		return false
 	}
