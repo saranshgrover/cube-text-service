@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { SunIcon, MoonIcon, ChevronDownIcon } from '@chakra-ui/icons'
-import { getSession, signOut, useSession } from 'next-auth/react'
+import { getSession, signOut, useSession, signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 interface MenuItemProps {
@@ -95,6 +95,18 @@ export default function Header(): ReactElement {
 							gap={'2em'}
 							right={{ base: 'auto', md: '0' }}
 							position={{ base: undefined, md: 'absolute' }}>
+							{status === 'unauthenticated' && (
+								<Button
+									variant={'solid'}
+									colorScheme={'blue'}
+									onClick={() =>
+										signIn('wca', {
+											callbackUrl: '/',
+										})
+									}>
+									Sign In
+								</Button>
+							)}
 							{status === 'authenticated' && (
 								<Flex alignItems={'center'}>
 									<Menu>
