@@ -47,7 +47,8 @@ export default async function handler(
 			} else {
 				response.status(403).json({})
 			}
+		} else {
+			response.status(403).json({})
 		}
-		response.status(403).json({})
 	}
 }
